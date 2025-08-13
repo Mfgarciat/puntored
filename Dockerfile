@@ -1,13 +1,9 @@
-FROM eclipse-temurin:17-jdk-focal as build
-
+FROM eclipse-temurin:17-jdk as builder
 WORKDIR /app
+COPY puntored .
+RUN ./mvnw clean package -DskipTests
 
-COPY . .
-
-RUN mvn clean install -DskipTests
-
-FROM eclipse-temurin:17-jre-focal
-
-COPY --from=build /app/target/puntored-0.0.1-SNAPSHOT.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=builder /app/puntored/target/*.jar app.jar
+CMD ["java", "-jar", "app.jar"]
