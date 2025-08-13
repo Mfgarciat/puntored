@@ -1,0 +1,4 @@
+com\test\puntored\user\infrastructure\adapter\in\controllers\AuthControllerTest.class
+com\test\puntored\PuntoredApplicationTests.class
+com\test\puntored\recharge\infrastructure\adapter\in\controllers\RechargeControllerTest.class
+com\test\puntored\user\infrastructure\adapter\in\controllers\UserControllerTest.class
