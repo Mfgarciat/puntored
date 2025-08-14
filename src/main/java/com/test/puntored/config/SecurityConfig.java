@@ -11,28 +11,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.config.Customizer;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-  
+
     @Autowired
-    private  JwtAuthenticationFilter jwtFilter;
+    private JwtAuthenticationFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(customizeRequests->{
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(customizeRequests -> {
                     customizeRequests
                             .requestMatchers("/api/auth/**").permitAll()
                             .requestMatchers("/api/user/**").permitAll()
                             .anyRequest()
                             .authenticated();
-                        })
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                })
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -43,7 +44,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
