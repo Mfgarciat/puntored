@@ -42,14 +42,14 @@ public class UserControllerTest {
         private UserServiceImpl userServicePort;
 
         @MockBean
-        private JwtUtil jwtUtil; // Mock del JwtUtil faltante
+        private JwtUtil jwtUtil; 
 
         @MockBean
-        private JwtAuthenticationFilter jwtAuthenticationFilter; // Mock del filtro
+        private JwtAuthenticationFilter jwtAuthenticationFilter; 
 
         @Test
         public void registerUser_shouldReturn200AndUserResponse_whenRegistrationIsSuccessful() throws Exception {
-                // Preparar datos de prueba
+                
                 UserRegistrationDTO registrationDTO = UserRegistrationDTO.builder()
                                 .name("testuser")
                                 .document("1258745678")
@@ -64,10 +64,10 @@ public class UserControllerTest {
                                 .email("test@example.com")
                                 .build();
 
-                // Configurar mock
+               
                 when(userServicePort.createUser(any(UserRegistrationDTO.class))).thenReturn(responseDTO);
 
-                // Ejecutar y verificar
+                
                 mockMvc.perform(post("/api/user/registration")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(registrationDTO)))
@@ -98,7 +98,7 @@ public class UserControllerTest {
 
         @Test
         public void registerUser_shouldReturn400_whenInputIsInvalid() throws Exception {
-                UserRegistrationDTO invalidDTO = new UserRegistrationDTO(); // Datos faltantes
+                UserRegistrationDTO invalidDTO = new UserRegistrationDTO(); 
 
                 mockMvc.perform(post("/api/user/registration")
                                 .contentType(MediaType.APPLICATION_JSON)

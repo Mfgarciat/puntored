@@ -7,7 +7,6 @@ import com.test.puntored.user.application.service.AuthServiceImpl;
 import com.test.puntored.user.infrastructure.adapter.in.controller.AuthController;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,10 +40,10 @@ public class AuthControllerTest {
         private AuthServiceImpl authService;
 
         @MockBean
-        private JwtUtil jwtUtil; // Mock del JwtUtil faltante
+        private JwtUtil jwtUtil; 
 
         @MockBean
-        private JwtAuthenticationFilter jwtAuthenticationFilter; // Mock del filtro
+        private JwtAuthenticationFilter jwtAuthenticationFilter; 
 
         @Test
         void login_Success() throws Exception {
@@ -68,7 +67,7 @@ public class AuthControllerTest {
 
         @Test
         void login_Failure() throws Exception {
-                // Arrange
+                
                 LoginRequestDTO request = LoginRequestDTO.builder()
                         .email("wrong@example.com")
                         .password("wrongpass")
@@ -77,7 +76,7 @@ public class AuthControllerTest {
                 when(authService.login(anyString(), anyString()))
                                 .thenThrow(new RuntimeException("Invalid credentials"));
 
-                // Act & Assert
+               
                 mockMvc.perform(post("/api/auth/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
