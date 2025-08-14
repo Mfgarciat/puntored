@@ -17,7 +17,7 @@ public class UserRegistrationDTO {
     private String name;
 
     @NotBlank(message = "Document is required")
-    @Size(min = 20, message = "Document must be at least 10 characters")
+    @Size(min = 20, message = "Document must be at least 20 characters")
     private String document;
 
     @NotBlank(message = "cellphone number is required")
