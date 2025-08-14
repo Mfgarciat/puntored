@@ -135,7 +135,7 @@ https://front-puntored.onrender.com
       ```bash
       ./mvnw clean package -DskipTests
       ```
-    - **Start Command:**
+  - **Start Command:**
       ```bash
       java -jar target/*.jar
       ```
@@ -168,7 +168,7 @@ https://front-puntored.onrender.com
       ```bash
       npm install && npm run build
       ```
-    - **Publish Directory:**
+  - **Publish Directory:**
       ```
       dist
       ```
