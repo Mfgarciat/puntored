@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class UserRegistrationDTO {
 
     @NotBlank(message = "Username is required")
-    @Size(min = 4, max = 20, message = "Username must be between 4 and 20 characters")
+    @Size(min = 4, max = 100, message = "Username must be between 4 and 20 characters")
     private String name;
 
     @NotBlank(message = "Document is required")
-    @Size(min = 10, message = "Document must be at least 10 characters")
+    @Size(min = 20, message = "Document must be at least 10 characters")
     private String document;
 
     @NotBlank(message = "cellphone number is required")
