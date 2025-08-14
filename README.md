@@ -1,13 +1,12 @@
 # 📄 Proyecto Puntored – API de Recargas
 
 Este proyecto implementa un servicio de recargas utilizando **Spring Boot** y consumiendo los servicios de **Puntored**.  
-Incluye persistencia de datos y un frontend en **React** para la interacción con el usuario.
+Incluye persistencia de datos en **PostgreSQL** y un frontend en **React** para la interacción con el usuario.  
+El despliegue final se realizó en **Render**.
 
 ---
 
 ## 🚀 Requisitos previos
-> **Nivel:** Dependencias necesarias para que el proyecto funcione en tu máquina.
-
 ### Backend
 - **Java 17+**
 - **Maven 3.8+**
@@ -20,132 +19,178 @@ Incluye persistencia de datos y un frontend en **React** para la interacción co
 
 ---
 
-## ⚙️ Instalación y ejecución
-> **Nivel:0** API básica con Spring Boot y servicios de Puntored
-> Instrucciones paso a paso para levantar el proyecto.
+## 📌 Desafíos por niveles
 
-### 1️⃣ Backend – Spring Boot
+### 🟢 Nivel 0 – API básica con Spring Boot
+**Objetivos:**
+- Desarrollar una API en Java con Spring Boot que integre los servicios de Puntored (`auth`, `getSuppliers`, `buy`).
+- (Opcional) Implementar test unitarios.
+
+**Instalación y ejecución:**
 ```bash
 # Clonar repositorio
-git clone https://github.com/usuario/proyecto.git
+git clone https://github.com/Mfgarciat/puntored
 cd proyecto/backend
 
 # Construir y ejecutar
 mvn clean install
-
-# Ejecutar la aplicación
 mvn spring-boot:run
 
 # Ejecutar pruebas unitarias
 mvn test
-
 ```
 La API quedará disponible en:
 ```
 http://localhost:8080
 ```
 
-**Configuración de base de datos** (`src/main/resources/application.properties`):
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/puntored_db
-spring.datasource.username=puntored_user
-spring.datasource.password=AY-BR*+-2025
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.hibernate.ddl-auto=update
-```
-
----
-
-### 2️⃣ Frontend – React
-```bash
-cd proyecto/frontend
-npm install
-npm run dev
-
-# Ejecutar pruebas unitarias
-mvn test
-```
-El frontend quedará disponible en:
-```
-http://localhost:5173
-```
-
-****
-
----
-
-## 📡 Endpoints disponibles
-> **Nivel:** Rutas expuestas por la API y qué hacen.
-
+**Endpoints principales:**
 | Método | URL | Descripción |
 |--------|-----|-------------|
 | `POST` | `/api/auth/login` | Autenticación de usuario |
 | `POST` | `/api/user/registration` | Registro de nuevo usuario |
 | `GET`  | `/api/recharge/suppliers` | Listado de proveedores |
 | `POST` | `/api/recharge/buy` | Realizar recarga |
+
+---
+
+### 🟡 Nivel 1 – Persistencia y consulta de histórico
+**Objetivos:**
+- Almacenar la información transaccional en una base de datos.
+- Listar las transacciones realizadas por el usuario (consulta de histórico).
+
+**Base de datos:**
+- Motor: **PostgreSQL**
+- Configuración local en `src/main/resources/application.properties`:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/puntored_db
+spring.datasource.username=puntored_user
+spring.datasource.password=tu_password
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+```
+
+**Script de creación de base de datos:**
+```sql
+CREATE DATABASE puntored_db;
+```
+
+**Endpoint de histórico:**
+| Método | URL | Descripción |
+|--------|-----|-------------|
 | `GET`  | `/api/recharge/history` | Histórico de recargas |
 
 ---
 
-## 🧪 Ejemplos de uso
-> **Nivel:** Cómo probar la API usando `curl`.
+### 🔵 Nivel 2 – Frontend en React
+**Objetivos:**
+- Frontend en React que consuma la API del Nivel 0.
+- Realizar recargas y mostrar ticket al finalizar.
+- Consultar transacciones realizadas.
+- (Opcional) Implementar login propio y test unitarios.
 
-### Login
+**Instalación y ejecución:**
 ```bash
-curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" -d '{
-  "email": "testuser@gmail.com",
-  "password": "Test@123"
-}'
+cd proyecto/frontend
+npm install
+npm run dev
+
+# Ejecutar pruebas unitarias
+npm run test
+```
+El frontend quedará disponible en:
+```
+http://localhost:5173
 ```
 
-### Registro
-```bash
-curl -X POST http://localhost:8080/api/user/registration -H "Content-Type: application/json" -d '{
-  "name": "Test User",
-  "document": "123456789",
-  "cellphone": "3122578935",
-  "password": "Test@123",
-  "email": "test@example.com"
-}'
-```
-
-### Obtener proveedores
-```bash
-curl -X GET http://localhost:8080/api/recharge/suppliers -H "Authorization: Bearer <token>"
-```
-
-### Comprar recarga
-```bash
-curl -X POST http://localhost:8080/api/recharge/buy -H "Authorization: Bearer <token>" -H "Content-Type: application/json" -d '{
-  "phoneNumber": "3001234567",
-  "value": 10000,
-  "supplierId": "8753"
-}'
-```
-
-### Consultar histórico
-```bash
-curl -X GET http://localhost:8080/api/recharge/history -H "Authorization: Bearer <token>"
-```
+**Funcionalidades:**
+- Login y registro de usuario.
+- Consulta de proveedores.
+- Recargas en línea.
+- Resumen y ticket de compra.
+- Consulta de histórico.
 
 ---
 
-## 📊 Funcionalidades del Frontend
-> **Nivel:** Qué puede hacer el usuario desde la interfaz web.
+### 🔴 Nivel 3 – Despliegue en Render
+**Objetivos:**
+- Desplegar backend y frontend en la nube usando Render.
 
-- **Login**  de usuario.
-- Consulta de **proveedores** disponibles.
-- Realización de **recargas**.
-- Visualización de **historial de transacciones**.
-- Generación de **resumen y ticket** de compra.
+**URL de la API:**
+```
+https://puntored-70qh.onrender.com
+```
 
----
+**URL del Frontend:**
+```
+https://front-puntored.onrender.com
+```
 
-## ☁️ Despliegue en la nube (Opcional)
-> **Nivel:** Opciones de publicación del sistema en servidores en línea.
+#### Pasos de despliegue – Backend
+  1. Subir código a GitHub.
+  2. En Render: **New → Web Service**, conectar con el repo, elegir rama (`master`).
+  3. Configuración:
+    - **Environment:** Java 17
+    - **Build Command:**
+      ```bash
+      ./mvnw clean package -DskipTests
+      ```
+    - **Start Command:**
+      ```bash
+      java -jar target/*.jar
+      ```
+  4. Variables de entorno:
+  ```properties
+  # Base de datos
+  DATABASE_URL=jdbc:postgresql://<HOST>:<PORT>/<DB_NAME>
+  DATABASE_USERNAME=<usuario>
+  DATABASE_PASSWORD=<contraseña>
 
-Sugerencias:
-- **Backend**: AWS Elastic Beanstalk, Azure App Service, GCP App Engine.
-- **Frontend**: Netlify, Vercel o AWS Amplify.
+  # API de Puntored
+  PUNTORED_API_URL=https://api.puntored.com
+  PUNTORED_API_KEY=<api_key>
+  PUNTORED_AUTH_USER=<usuario_puntored>
+  PUNTORED_AUTH_PASSWORD=<password_puntored>
 
----
+  # JWT
+  JWT_SECRET=<clave_secreta_jwt>
+  JWT_EXPIRATION=<tiempo_expiracion>
+
+  # CORS
+  CORS_ALLOWED_ORIGINS=<url_frontend_render>
+  ```
+
+  #### Pasos de despliegue – Frontend
+  1. Subir código a GitHub.
+  2. En Render: **New → Static Site**.
+  3. Configuración:
+    - **Build Command:**
+      ```bash
+      npm install && npm run build
+      ```
+    - **Publish Directory:**
+      ```
+      dist
+      ```
+  4. Variable de entorno:
+  ```bash
+  VITE_API_URL=https://front-puntored.onrender.com
+  ```
+
+  5. Base de datos en Render
+  - Crear recurso **PostgreSQL** en Render.
+  - Copiar la URL de conexión, usuario y contraseña y colocarla en `DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD`.
+  - Render gestionará el host, puerto, usuario y contraseña.
+
+  ---
+
+  ### 📌 Notas importantes
+  - El plan gratuito de Render entra en reposo después de 15 min sin tráfico.
+  - Habilitar CORS en backend si el frontend está en otro dominio.
+  - Render ofrece logs en tiempo real para depuración.
+
+## ✨ Tecnologías utilizadas
+- **Backend:** Java 17, Spring Boot, Maven
+- **Frontend:** React, Vite
+- **Base de datos:** PostgreSQL
+- **Despliegue:** Render
